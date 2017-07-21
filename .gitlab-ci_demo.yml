@@ -1,0 +1,32 @@
+stages:
+  - tests
+
+phpunit:php7.1:
+  stage: tests
+
+  image: besseiit/webdev
+
+  services:
+    - mysql
+
+  variables:
+    # Configure mysql service (https://hub.docker.com/_/mysql/)
+    MYSQL_ROOT_PASSWORD: sMPiJk8acE0N0WU0525kKSpyQ2lYZU
+    TIMEZONE: "Europe/Vienna"
+    databaseName: "testing"
+    databaseUsername: "root"
+    databasePassword: "sMPiJk8acE0N0WU0525kKSpyQ2lYZU"
+    databaseHost: "mysql"
+
+  before_script:
+    # Add SSH key so we can clone private repositories (and could be useful for deployment)
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    # Disable host key verification since docker can't know the remote host (first connect)
+    - echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config
+    # Add prestissimo for faster package download
+    - composer global require hirak/prestissimo
+
+  script:
+    - composer install

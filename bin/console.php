@@ -1,0 +1,4 @@
+<?php
+/**
+ * @author Christoph Bessei
+ */
