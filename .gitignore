@@ -2,3 +2,5 @@
 vendor/
 tmp/*
 .env
+# Exclude composer.lock, since this is a skeleton project. We shouldn't force specific dependency versions
+composer.lock
